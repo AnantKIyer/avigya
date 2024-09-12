@@ -1,15 +1,24 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, useColorScheme } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation, useRouter } from 'expo-router'
 import { Colors } from '@/constants/Colors';
+import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ThemedText';
 
 export default function Login() {
 
     const router = useRouter();
 
     const [phoneNumber, setPhoneNumber] = useState('');
-    
 
+    const colorScheme = useColorScheme();
+    const inputTextColor = colorScheme === 'dark'? Colors.whitish : Colors.deepSeaBlue;
+
+    const inputStyles = {
+        
+        color: colorScheme === 'dark'? Colors.whitish : Colors.deepSeaBlue,
+    }
+    
     const navigation = useNavigation(); 
 
     useEffect(() => {
@@ -28,21 +37,29 @@ export default function Login() {
             return;
         } 
         //TODO: Write the authentication API function here
-        router.push('/(tabs)/auth/oneTimeVerificatoin');
+        router.push('/(tabs)/auth/oneTimeVerification');
         
     }
 
 
   return (
-    <View style={styles.header}>
-      <Text style= {styles.headerText}>Let's Sign you in!</Text>
-      <Text style= {styles.headerSubText}>Lorem ipsum dolor sit amet</Text>
+    <ThemedView style={styles.header}>
+        <ThemedView style={{height: 120}}>
+        <ThemedText style= {styles.headerText}>Let's Sign you in!</ThemedText>
+        <ThemedText style= {styles.headerSubText}>Lorem ipsum dolor sit</ThemedText>
+        </ThemedView>
+      
 
       <View style={{
-        marginTop: 50
+        marginTop: 120
       }}>
         <Text style={{paddingLeft: 5}}>Phone No.</Text>
-        <TextInput placeholder='Your Phone Number' style={styles.input} onChangeText={
+        <TextInput 
+        placeholder='Your Phone Number' 
+        maxLength={10}
+        placeholderTextColor={inputTextColor} 
+        style={[styles.input, inputStyles]} 
+        onChangeText={
             (value) => setPhoneNumber(value)
         }/>
       </View>
@@ -60,7 +77,7 @@ export default function Login() {
             fontSize: 18
         }}>Sign In</Text>
       </TouchableOpacity>
-    </View>
+    </ThemedView>
   )
 }
 
@@ -68,16 +85,20 @@ const styles = StyleSheet.create({
     header: {
         padding: 25,
         paddingTop: 80,
-        marginTop: 50
+        marginTop: 50,
+        height: '100%'
     },
     headerText: {
         fontFamily: 'outfitBold', 
-        fontSize: 32, 
+        fontSize: 30, 
+        paddingTop: 30
     },
     headerSubText: {
-        fontFamily: 'outfitMedium',
+        fontFamily: 'outfitLight',
         fontSize: 30,
-        color: Colors.grey
+        color: Colors.grey,
+        paddingTop: 5, 
+
     },
     input: {
         padding: 15, 

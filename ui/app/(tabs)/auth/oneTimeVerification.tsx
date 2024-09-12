@@ -1,11 +1,19 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, useColorScheme } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation, useRouter } from 'expo-router';
 import React from 'react';
 
 import { Colors } from '@/constants/Colors';
+import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ThemedText';
 
 export default function oneTimeVerificatoin() {
+
+const colorScheme = useColorScheme(); 
+
+const inputStyles = {
+    color: colorScheme === 'dark' ?  Colors.whitish : Colors.grey
+}
     
 const navigation = useNavigation(); 
 const router = useRouter()
@@ -20,44 +28,41 @@ const [oneTimePass, setOneTimePass] = useState('');
 
 const validateOTP = () => {
     //TODO: write validation API and logic here
-    const tempPass: String = '123456'
+    const tempPass: String = '123456';
     if(!oneTimePass.trim()) {
         alert('OTP cannot be blank');
         return;
     }
     if(oneTimePass === tempPass) {
-        router.push('/(tabs)/profile/UserProfile');
+        router.push('/(tabs)/profile/EditUserProfile');
     } else {
         alert('Incorrect OTP. Please try again')
     }
-
-    
 }
 
 
 
   return (
-    <View style={styles.header}>
-      <Text style= {styles.headerText}>Enter the OTP</Text>
+    <ThemedView style={styles.header}>
+      <ThemedText style= {styles.headerText}>Enter the OTP</ThemedText>
 
-      <View style={{
+      <ThemedView style={{
         marginTop: 50
       }}>
-        <Text style={{paddingLeft: 5}}>One Time Password</Text>
-        <TextInput placeholder='One Time Verification' style={styles.input} onChangeText={
+        <ThemedText type='defaultSemiBold' style={{padding: 5}}>One Time Password</ThemedText>
+        <TextInput placeholder='One Time Verification' style={[styles.input, inputStyles]} onChangeText={
             (value) => setOneTimePass(value)
         }/>
         <TouchableOpacity style={{
             width: '100%',
             alignItems: 'flex-end'
         }}>
-            <Text style={{
+            <ThemedText style={{
                 fontFamily: 'outfitLight',
-                color: Colors.deepSeaBlue, 
                 paddingRight: 2
-            }}>Resend OTP?</Text>
+            }}>Resend OTP?</ThemedText>
             </TouchableOpacity>
-      </View>
+      </ThemedView>
       <TouchableOpacity style={{
         marginTop: 30,
          padding: 15, 
@@ -72,7 +77,7 @@ const validateOTP = () => {
             fontSize: 18
         }}>Sign In</Text>
       </TouchableOpacity>
-    </View>
+    </ThemedView>
   )
 }
 
@@ -80,9 +85,9 @@ const styles = StyleSheet.create({
     header: {
         padding: 25,
         paddingTop: 80,
-        marginTop: 50
     },
     headerText: {
+        paddingTop: 30,
         fontFamily: 'outfitBold', 
         fontSize: 32, 
     },
